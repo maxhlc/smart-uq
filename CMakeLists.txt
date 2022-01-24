@@ -109,10 +109,9 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
-configure_file (
-  "${SRC_PATH}/config.h.in"
-  "${INCLUDE_PATH}/config.h"
-  )
+if(CHEBYSHEV_DCT_MULTIPLICATION)
+add_compile_definitions(CHEBYSHEV_DCT_MULTIPLICATION)
+endif(CHEBYSHEV_DCT_MULTIPLICATION)
 
 include_directories(${EIGEN_INCLUDE_PATH})
 

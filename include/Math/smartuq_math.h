@@ -13,7 +13,6 @@
 
 #include <vector>
 #include <cmath>
-#include "../config.h"
 
 namespace smartuq{
 

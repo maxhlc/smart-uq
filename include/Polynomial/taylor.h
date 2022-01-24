@@ -13,7 +13,6 @@
 #define SMARTUQ_TAYLOR_H
 
 #include "base_polynomial.h"
-#include "../config.h"
 
 using namespace std;
 

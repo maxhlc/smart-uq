@@ -12,7 +12,6 @@
 #define SMARTUQ_CHEBYSHEV_POLYNOMIAL_H_
 
 #include "base_polynomial.h"
-#include "../config.h"
 
 #ifdef CHEBYSHEV_DCT_MULTIPLICATION
 #include <fftw3.h>

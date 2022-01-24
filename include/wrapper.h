@@ -10,7 +10,6 @@
 
 #ifndef SMARTUQ_WRAPPER_H
 #define SMARTUQ_WRAPPER_H
-#include "config.h"
 
 #ifdef CHEBYSHEV_DCT_MULTIPLICATION
 #include <fftw3.h>
