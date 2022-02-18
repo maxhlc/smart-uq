@@ -19,9 +19,9 @@
 #include <cstdlib>
 #include <numeric>
 #include <iomanip>
-#include <Eigen/Core>
-#include <Eigen/LU>
-#include <Eigen/SVD>
+#include <eigen3/Eigen/Core>
+#include <eigen3/Eigen/LU>
+#include <eigen3/Eigen/SVD>
 #include "../exception.h"
 #include "../constants.h"
 #include "../wrapper.h"

@@ -17,7 +17,6 @@ set(PROJECT_VERSION
 set(PROJECT_PATH                               "${CMAKE_CURRENT_SOURCE_DIR}")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}     "${PROJECT_PATH}/cmake/Modules")
 set(INCLUDE_PATH                               "${PROJECT_PATH}/include")
-set(EIGEN_INCLUDE_PATH                         "${PROJECT_PATH}/include/Math")
 set(SRC_PATH                                   "${PROJECT_PATH}/src")
 set(TEST_SRC_PATH                              "${PROJECT_PATH}/test")
 if(NOT EXTERNAL_PATH)
@@ -112,8 +111,6 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 if(CHEBYSHEV_DCT_MULTIPLICATION)
   add_definitions(-DCHEBYSHEV_DCT_MULTIPLICATION)
 endif(CHEBYSHEV_DCT_MULTIPLICATION)
-
-include_directories(${EIGEN_INCLUDE_PATH})
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${LIB_PATH})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LIB_PATH})
