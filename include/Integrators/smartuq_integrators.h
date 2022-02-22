@@ -17,5 +17,6 @@
 #include "heun.h"
 #include "rk3.h"
 #include "rk4.h"
+#include "rk45.h"
 
 #endif // SMARTUQ_INTEGRATORS_H
