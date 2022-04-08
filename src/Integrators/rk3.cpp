@@ -38,7 +38,7 @@ int rk3<T>::integrate(const double &ti, const double &tend, const int &nsteps, c
 
         std::vector<T> x(x0), xtemp(x0), k1, k2, k3;
 
-	unsigned int n = x0.size();
+	std::size_t n = x0.size();
 	double h = (tend-ti)/nsteps;
 
     for(int i=0; i<nsteps; i++){
@@ -51,22 +51,22 @@ int rk3<T>::integrate(const double &ti, const double &tend, const int &nsteps, c
 		m_dyn->evaluate(t1, x, k1);
 
 		//* Evaluate k2 = f(x+h/2*k1),
-		for(int j=0; j<n; j++)
+		for(std::size_t j=0; j<n; j++)
 		    xtemp[j] = x[j]+k1[j]*h/2.0;
 		m_dyn->evaluate(t2, xtemp, k2);
 
 		//* Evaluate k3 = f(x+3/4*k2),
-		for(int j=0; j<n; j++)
+		for(std::size_t j=0; j<n; j++)
 		    xtemp[j] = x[j]+k2[j]*h*3.0/4.0;
 		m_dyn->evaluate(t3, xtemp, k3);
 
 		//* Return x(t+h) computed from third-order Runge Kutta.
-		for(int j=0; j<n; j++)
+		for(std::size_t j=0; j<n; j++)
 		    x[j] += (2.0*k1[j]+3.0*k2[j]+4.0*k3[j])*h/9.0;
 
 	}
 
-	for(int i=0; i<x0.size(); i++)
+	for(std::size_t i=0; i<x0.size(); i++)
 	    xfinal.push_back(x[i]);
 
 	return 0;

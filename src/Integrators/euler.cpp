@@ -43,12 +43,12 @@ int euler<T>::integrate(const double &ti, const double &tend, const int &nsteps,
 
     for(int i=0; i<nsteps; i++){
 		m_dyn->evaluate(ti+i*h, x, dx);
-		for(size_t j=0; j<x.size(); j++){
+		for(std::size_t j=0; j<x.size(); j++){
 			x[j] += h*dx[j];
 		}
 	}
 
-	for(int i=0; i<x0.size(); i++)
+	for(std::size_t i=0; i<x0.size(); i++)
 	    xfinal.push_back(x[i]);
 
 	return 0;

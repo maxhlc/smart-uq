@@ -36,7 +36,7 @@ int heun<T>::integrate(const double &ti, const double &tend, const int &nsteps, 
 
 	xfinal.clear();
 
-	unsigned int size = x0.size();
+	std::size_t size = x0.size();
 	std::vector<T> dx, dx_temp;
 	std::vector<T> x(x0), x_temp(x0);
 
@@ -45,18 +45,18 @@ int heun<T>::integrate(const double &ti, const double &tend, const int &nsteps, 
     for(int i=0; i<nsteps; i++){
 		m_dyn->evaluate(ti+i*h, x, dx);
 
-		for(size_t j=0; j<size; j++){
+		for(std::size_t j=0; j<size; j++){
 		    x_temp[j] = x[j] + h*dx[j];
 		}
 
 		m_dyn->evaluate(ti+(i+1)*h, x_temp, dx_temp);
-		for(size_t j=0; j<size; j++){
+		for(std::size_t j=0; j<size; j++){
 		    x[j] += h/2.0*(dx[j] + dx_temp[j]);
 		}
 
 	}
 
-	for(int i=0; i<x0.size(); i++)
+	for(std::size_t i=0; i<x0.size(); i++)
 	    xfinal.push_back(x[i]);
 
 	return 0;

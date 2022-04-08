@@ -258,7 +258,7 @@ chebyshev_polynomial<T> chebyshev_polynomial<T>::operator*(const T& other) const
     std::vector<T> coeffs=this->get_coeffs();
     chebyshev_polynomial<T> res(m_nvar,m_degree,m_monomial_base);
 
-    for(int i=0; i<coeffs.size(); i++)
+    for(std::size_t i=0; i<coeffs.size(); i++)
         coeffs[i] *= other;
 
     res.set_coeffs(coeffs);
@@ -271,7 +271,7 @@ chebyshev_polynomial<T> chebyshev_polynomial<T>::operator/(const T& other) const
     std::vector<T> coeffs=this->get_coeffs();
     chebyshev_polynomial<T> res(m_nvar,m_degree,m_monomial_base);
 
-    for(int i=0; i<coeffs.size(); i++)
+    for(std::size_t i=0; i<coeffs.size(); i++)
         coeffs[i] /= other;
 
     res.set_coeffs(coeffs);
@@ -296,7 +296,7 @@ chebyshev_polynomial<T> chebyshev_polynomial<T>::operator-() const{
 
     std::vector<T> coeffs=this->get_coeffs();
     chebyshev_polynomial<T> res(m_nvar,m_degree,m_monomial_base);
-    for (int i=0;i<coeffs.size();i++){
+    for (std::size_t i=0; i<coeffs.size(); i++){
         coeffs[i] = -coeffs[i];
     }
     res.set_coeffs(coeffs);
@@ -544,7 +544,7 @@ std::vector<chebyshev_polynomial<T> > chebyshev_polynomial<T>::evaluate_base1D(c
 
 template <class T>
 void chebyshev_polynomial<T>::composition(const std::vector<chebyshev_polynomial<T> > &other){
-    if(m_nvar!=other.size()){
+    if((std::size_t) m_nvar!=other.size()){
         smart_throw(m_name+": Composition is with a vector of polynomial of the same size of nvar");
     }
 
@@ -599,7 +599,7 @@ void chebyshev_polynomial<T>::composition(const std::vector<chebyshev_polynomial
 
 template <class T>
 std::vector<T> chebyshev_polynomial<T>::evaluate_basis(const std::vector<T> &x) const{
-    if(m_nvar!=x.size()){
+    if((std::size_t) m_nvar!=x.size()){
         smart_throw(m_name+": (evaluate) Dimension of point must correspond to number of variables of polynomial.");
     }
 
@@ -662,7 +662,7 @@ T chebyshev_polynomial<T>::evaluate(const std::vector<T> &x) const { //most dire
 
     //construct the full polynomial value
     T res = 0;
-    for(int i=0;i<m_coeffs.size(); i++)
+    for(std::size_t i=0; i<m_coeffs.size(); i++)
         res+=m_coeffs[i]*basis[i];
 
     return res;
@@ -700,7 +700,7 @@ void chebyshev_polynomial<T>::to_monomial_basis(){
 
     //check that polynomial is not constant neither 1st degree. In this case do nohing
     T sum = 0.0;
-    for(int i=m_nvar+1; i<m_coeffs.size(); i++)
+    for(std::size_t i=m_nvar+1; i<m_coeffs.size(); i++)
         sum += fabs(m_coeffs[i]);
     if(sum==0)
         return;

@@ -35,7 +35,7 @@ std::vector<T> lhs<T>::operator()() const{
     m_initialised=true;
     m_next=0;
   }
-  for (int i=0;i<m_dim;i++){
+  for (unsigned int i=0; i<m_dim; i++){
     retval[i]=m_set[m_next+i*m_npoints];
   }
   m_next++;
@@ -52,7 +52,7 @@ std::vector<T> lhs<T>::operator()(const unsigned int &n) const{
     m_set=latin_random(m_dim,m_npoints);
     m_initialised=true;
   }
-  for (int i=0;i<m_dim;i++){
+  for (unsigned int i=0; i<m_dim; i++){
     retval[i]=m_set[m_next+i*m_npoints];
   }
   m_next++;

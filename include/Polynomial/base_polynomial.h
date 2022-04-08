@@ -283,7 +283,7 @@ namespace polynomial{
                 bool use_Q = false;
                 if(m_monomial_base && m_nvar == m_Mnvar && m_degree == m_Mdegree) use_Q = true;
 
-                for(int i=1; i<m_coeffs.size(); i++){
+                for(std::size_t i=1; i<m_coeffs.size(); i++){
                     T term = fabs(m_coeffs[i]);
                     range[1] += term;
                     if (use_Q && m_Q[i]==true){

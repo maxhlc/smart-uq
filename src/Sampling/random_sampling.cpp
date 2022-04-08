@@ -29,7 +29,7 @@ random_sampling<T>::~random_sampling(){
 template <class T>
 std::vector<T> random_sampling<T>::operator()() const{
   std::vector<T> retval(m_dim,0.0);
-  for (int i=0;i<m_dim;i++){
+  for (unsigned int i=0; i<m_dim; i++){
     retval[i]=((T) rand()) / ((T) RAND_MAX + 1.0);
   }
   return this->map(retval);

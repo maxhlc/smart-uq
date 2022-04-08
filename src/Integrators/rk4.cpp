@@ -36,7 +36,7 @@ int rk4<T>::integrate(const double &ti, const double &tend, const int &nsteps, c
 
         xfinal.clear();
 
-        unsigned int n = x0.size();
+        std::size_t n = x0.size();
         std::vector<T> x(x0), xtemp(x0), k1, k2, k3, k4;
 
 	double h = (tend-ti)/nsteps;
@@ -52,27 +52,27 @@ int rk4<T>::integrate(const double &ti, const double &tend, const int &nsteps, c
 		m_dyn->evaluate(t1, x, k1);
 
 		//* Evaluate k2 = f(x+h/2*k1),
-		for(int j=0; j<n; j++)
+		for(std::size_t j=0; j<n; j++)
 		    xtemp[j] = x[j]+k1[j]*h/2.0;
 		m_dyn->evaluate(t2, xtemp, k2);
 
 		//* Evaluate k3 = f(x+h/2*k2),
-		for(int j=0; j<n; j++)
+		for(std::size_t j=0; j<n; j++)
 		    xtemp[j] = x[j]+k2[j]*h/2.0;
 		m_dyn->evaluate(t3, xtemp, k3);
 
 		//* Evaluate k4 = f(x+h*k3),
-		for(int j=0; j<n; j++)
+		for(std::size_t j=0; j<n; j++)
 		    xtemp[j] = x[j]+k3[j]*h;
 		m_dyn->evaluate(t4, xtemp, k4);
 
 		//* Return x(t+h) computed from fourth-order Runge Kutta.
-		for(int j=0; j<n; j++)
+		for(std::size_t j=0; j<n; j++)
 		    x[j] += (k1[j]+2.0*k2[j]+2.0*k3[j]+k4[j])*h/6.0;
 
 	}
 
-	for(int i=0; i<x0.size(); i++)
+	for(std::size_t i=0; i<x0.size(); i++)
 	    xfinal.push_back(x[i]);
 
 	return 0;

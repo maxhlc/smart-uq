@@ -167,7 +167,7 @@ taylor_polynomial<T> taylor_polynomial<T>::operator*(const T& other) const{
     std::vector<T> coeffs=this->get_coeffs();
     taylor_polynomial<T> res(m_nvar,m_degree);
 
-    for(int i=0; i<coeffs.size(); i++)
+    for(std::size_t i=0; i<coeffs.size(); i++)
         coeffs[i] *= other;
 
     res.set_coeffs(coeffs);
@@ -180,7 +180,7 @@ taylor_polynomial<T> taylor_polynomial<T>::operator/(const T& other) const{
     std::vector<T> coeffs=this->get_coeffs();
     taylor_polynomial<T> res(m_nvar,m_degree);
 
-    for(int i=0; i<coeffs.size(); i++)
+    for(std::size_t i=0; i<coeffs.size(); i++)
         coeffs[i] /= other;
 
     res.set_coeffs(coeffs);
@@ -205,7 +205,7 @@ taylor_polynomial<T> taylor_polynomial<T>::operator-() const{
 
     std::vector<T> coeffs=this->get_coeffs();
     taylor_polynomial<T> res(m_nvar,m_degree);
-    for (int i=0;i<coeffs.size();i++){
+    for (std::size_t i=0; i<coeffs.size(); i++){
         coeffs[i] = -coeffs[i];
     }
     res.set_coeffs(coeffs);
@@ -393,7 +393,7 @@ std::vector<taylor_polynomial<T> > taylor_polynomial<T>::evaluate_base1D(const t
 
 template <class T>
 void taylor_polynomial<T>::composition(const std::vector<taylor_polynomial<T> > &other) {
-    if(m_nvar!=other.size()){
+    if((std::size_t) m_nvar!=other.size()){
         smart_throw(m_name+": Composition is with a vector of polynomial of the same size of nvar");
     }
 
@@ -467,7 +467,7 @@ T taylor_polynomial<T>::evaluate(const std::vector<T> &x) const { //most direct 
 
     //construct the full polynomial value
     T res = 0;
-    for(int i=0;i<m_coeffs.size(); i++)
+    for(std::size_t i=0; i<m_coeffs.size(); i++)
         res+=m_coeffs[i]*basis[i];
 
     return res;
