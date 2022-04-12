@@ -16,11 +16,7 @@
 #include <vector>
 #include "../exception.h"
 
-using namespace std;
-
-namespace smartuq{
-namespace sampling{
-
+namespace smartuq::sampling {
 
     /**
      * @brief The base_sampling class is a template abstract class. Any sampling added to the toolbox needs to inherit from it and implement the operator ()
@@ -43,7 +39,7 @@ namespace sampling{
              * @param b vector containing the upper bound value of each variable
              * @param name name of the sampling technique
              */
-            base_sampling(const unsigned int &dim, const std::vector<T>& a, const std::vector<T>& b, const string &name);
+            base_sampling(const unsigned int &dim, const std::vector<T>& a, const std::vector<T>& b, const std::string &name);
 
             /**
              * @brief ~base_sampling deconstructor
@@ -81,7 +77,7 @@ namespace sampling{
             /**
              * @brief m_name Sampling technique name
              */
-            string m_name;
+            std::string m_name;
             /**
              * @brief m_dim Hypercube dimension
              */
@@ -97,7 +93,6 @@ namespace sampling{
 
     };
 
-}}
-
+}
 
 #endif // SMARTUQ_BASE_SAMPLING_H

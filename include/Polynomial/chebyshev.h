@@ -17,10 +17,7 @@
 #include <fftw3.h>
 #endif
 
-using namespace std;
-
-namespace smartuq{
-namespace polynomial{
+namespace smartuq::polynomial {
 	template < class T >
     /**
      *@brief Chebyshev polynomial
@@ -426,8 +423,6 @@ namespace polynomial{
 //		return chebyshev_polynomial<T>(right.get_nvar(), right.get_degree(), (T) left, right.is_monomial_base())/right;
         return left*right.inv(right);
 	}
-}}
-
-
+}
 
 #endif /* SMARTUQ_CHEBYSHEV_POLYNOMIAL_H_ */

@@ -11,36 +11,37 @@
 
 #include "../../include/Sampling/random_sampling.h"
 
-using namespace smartuq;
-using namespace sampling;
+namespace smartuq::sampling {
 
-/// random Constructor
-template <class T>
-random_sampling<T>::random_sampling(const unsigned int &dim, const std::vector<T>& a, const std::vector<T>& b) :  base_sampling<T>(dim,a,b,"Random Sampling"){
-  srand(time(NULL));
+  /// random Constructor
+  template <class T>
+  random_sampling<T>::random_sampling(const unsigned int &dim, const std::vector<T>& a, const std::vector<T>& b) :  base_sampling<T>(dim,a,b,"Random Sampling"){
+    srand(time(NULL));
+    }
+
+  /// random Deconstructor
+  template <class T>
+  random_sampling<T>::~random_sampling(){
   }
 
-/// random Deconstructor
-template <class T>
-random_sampling<T>::~random_sampling(){
-}
-
-/// Operator ()
-template <class T>
-std::vector<T> random_sampling<T>::operator()() const{
-  std::vector<T> retval(m_dim,0.0);
-  for (unsigned int i=0; i<m_dim; i++){
-    retval[i]=((T) rand()) / ((T) RAND_MAX + 1.0);
+  /// Operator ()
+  template <class T>
+  std::vector<T> random_sampling<T>::operator()() const{
+    std::vector<T> retval(m_dim,0.0);
+    for (unsigned int i=0; i<m_dim; i++){
+      retval[i]=((T) rand()) / ((T) RAND_MAX + 1.0);
+    }
+    return this->map(retval);
   }
-  return this->map(retval);
-}
 
-/// Operator (unsigned int n)
-template <class T>
-std::vector<T> random_sampling<T>::operator()(const unsigned int &n) const{
-  return operator()();
-}
+  /// Operator (unsigned int n)
+  template <class T>
+  std::vector<T> random_sampling<T>::operator()(const unsigned int &n) const{
+    return operator()();
+  }
 
-template class random_sampling<double>;
-template class random_sampling<float>;
-template class random_sampling<long double>;
+  template class random_sampling<double>;
+  template class random_sampling<float>;
+  template class random_sampling<long double>;
+
+}

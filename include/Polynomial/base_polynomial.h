@@ -27,10 +27,7 @@
 #include "../wrapper.h"
 #include "../Math/smartuq_math.h"
 
-using namespace std;
-
-namespace smartuq{
-namespace polynomial{
+namespace smartuq::polynomial{
 
     /**
      *@brief The base_polynomial class is a template abstract class. Any new polynomial base added to the toolbox needs to inherit from it and implement its virtual methods.
@@ -97,7 +94,7 @@ namespace polynomial{
          * @param poly polynomial to be printed
          * @return output stream
          */
-        friend ostream &operator<<(ostream &os, const base_polynomial<T> &poly) {
+        friend std::ostream &operator<<(std::ostream &os, const base_polynomial<T> &poly) {
 
             //if(poly.is_monomial_base())
                 //poly.from_monomial_basis();
@@ -105,13 +102,13 @@ namespace polynomial{
             std::vector<T> coeffs = poly.get_coeffs();
             int nvar = poly.get_nvar();
             int idx=0;
-            os <<std::setfill(' ')<<setw(16);
+            os <<std::setfill(' ')<<std::setw(16);
             for(int i=0; i<nvar; i++)
                 os << poly.get_basis_name() << "(x"<<i<<")\t";
             os << "\n";
             for(int deg=0; deg<=poly.get_degree(); deg++){
                 for(int i=0; i<poly.get_J()[poly.get_nvar()][deg]; i++){
-                    os <<left<<setw(16)<<coeffs[idx];
+                    os <<std::left<<std::setw(16)<<coeffs[idx];
                     std::vector<int> row = poly.get_row(i,deg);
                     for(int j=0; j<row.size(); j++)
                         os<<row[j]<<"\t";
@@ -387,7 +384,7 @@ namespace polynomial{
         /**
          * @brief m_name polynomial name
          */
-        string m_name;
+        std::string m_name;
         /**
          * @brief m_coeffsvector of coefficients
          */
@@ -441,8 +438,6 @@ namespace polynomial{
         static int m_Mdegree;
     };
 
-}}
-
-
+}
 
 #endif /* SMARTUQ_base_polynomial_H_ */

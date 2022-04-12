@@ -17,10 +17,7 @@
 #include <time.h>       /* time */
 #include "base_sampling.h"
 
-using namespace std;
-
-namespace smartuq{
-namespace sampling{
+namespace smartuq::sampling {
 
     /**
      * @brief Latin Hypercube Sampling
@@ -88,7 +85,6 @@ namespace sampling{
             mutable unsigned int m_next;
     };
 
-}}
-
+}
 
 #endif // SMARTUQ_LHS_H

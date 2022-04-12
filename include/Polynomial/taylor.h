@@ -14,10 +14,7 @@
 
 #include "base_polynomial.h"
 
-using namespace std;
-
-namespace smartuq{
-namespace polynomial{
+namespace smartuq::polynomial {
         template < class T >
     /**
      *@brief Taylor polynomial
@@ -368,7 +365,6 @@ namespace polynomial{
 	static taylor_polynomial<T> operator/(const int left, const taylor_polynomial<T> right){
 		return left*right.inv(right);
 	}
-}}
-
+}
 
 #endif // SMARTUQ_TAYLOR_H

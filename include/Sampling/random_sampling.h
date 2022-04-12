@@ -16,10 +16,8 @@
 #include <stdlib.h>     /* srand, rand */
 #include "base_sampling.h"
 
-using namespace std;
 
-namespace smartuq{
-namespace sampling{
+namespace smartuq::sampling {
 
     /**
      * @brief Random sampling technique
@@ -73,7 +71,6 @@ namespace sampling{
          std::vector<T> operator()(const unsigned int &n) const;
     };
 
-}}
-
+}
 
 #endif // SMARTUQ_RANDOM_SAMPLING_H
