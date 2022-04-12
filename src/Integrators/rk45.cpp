@@ -38,18 +38,24 @@ namespace smartuq::integrator {
 
     template <class T>
     int rk45<T>::integrate(const double& ti, const double& tend, const int& nsteps, const std::vector<T>& x0, std::vector<T>& xfinal) const {
-
+        // Number of state variables
         std::size_t n = x0.size();
+
+        // Declare temporary vectors
         std::vector<T> x(x0), xtemp(x0), k1, k2, k3, k4, k5, k6;
 
+        // Set current time to initial time
         double t = ti;
 
+        // Calculate initial step size, and declare new step size variable
         double h = (tend-ti)/nsteps;
         double hnew;
-        std::vector<double> TEvec(n);
+
+        // Declare truncation error variable
         double TE;
 
-        bool isIntegrationComplete = false, isStepComplete = false;
+        // Declare integration status flags
+        bool isIntegrationComplete = false, isToleranceSatisfied = true, isStepComplete = false;
 
         while(!isIntegrationComplete){
             // Ensure step remains within bounds
@@ -100,28 +106,31 @@ namespace smartuq::integrator {
                 m_dyn->evaluate(t6, xtemp, k6);
 
                 // Evaluate truncation error
-                for(std::size_t ii=0; ii<n; ii++)
-                    TEvec[ii] = (
-                                -  1.0/150.0 * k1[ii].get_coeffs()[0]
-                              //+  0.0/0.0   * k2[ii].get_coeffs()[0]
-                                +  3.0/100.0 * k3[ii].get_coeffs()[0]
-                                - 16.0/75.0  * k4[ii].get_coeffs()[0]
-                                -  1.0/20.0  * k5[ii].get_coeffs()[0]
-                                +  6.0/25.0  * k6[ii].get_coeffs()[0]
-                                )*h;
                 TE = 0.0;
-                for(std::size_t ii=0; ii<n; ii++)
-                    TE += pow(TEvec[ii], 2);
-                TE = sqrt(TE);
+                for(std::size_t ii=0; ii<n; ii++){
+                    TE += std::pow((
+                        -  1.0/150.0 * k1[ii].get_coeffs()[0]
+                     // +  0.0/0.0   * k2[ii].get_coeffs()[0]
+                        +  3.0/100.0 * k3[ii].get_coeffs()[0]
+                        - 16.0/75.0  * k4[ii].get_coeffs()[0]
+                        -  1.0/20.0  * k5[ii].get_coeffs()[0]
+                        +  6.0/25.0  * k6[ii].get_coeffs()[0]
+                        )*h,2);
+                }
+                TE = std::sqrt(TE);
 
                 // Calculate new step size
-                hnew = 0.9*h*pow(m_atol/TE, 0.2);
+                hnew = 0.9*h*std::pow(m_atol/TE, 0.2);
 
                 // Check convergence
-                if(TE > m_atol){
-                    h = hnew;
-                } else {
+                isToleranceSatisfied = (TE <= m_atol);
+
+                // Terminate step if converged
+                if(isToleranceSatisfied){
                     isStepComplete = true;
+                    isToleranceSatisfied = true;
+                } else {
+                    h = hnew;
                 }
             }
 
@@ -129,7 +138,7 @@ namespace smartuq::integrator {
             for(std::size_t ii=0; ii<n; ii++)
                 x[ii] = x[ii] + (
                         + 47.0/450.0 * k1[ii]
-                      //+  0.0/0.0   * k2[ii]
+                     // +  0.0/0.0   * k2[ii]
                         + 12.0/25.0  * k3[ii]
                         + 32.0/225.0 * k4[ii]
                         +  1.0/30.0  * k5[ii]
