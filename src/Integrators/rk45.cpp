@@ -27,7 +27,7 @@ SOFTWARE.
 namespace smartuq::integrator {
 
     template<class T>
-    rk45<T>::rk45(const dynamics::base_dynamics<T>* dyn, const double tol) : base_integrator<T>("Runge Kutta Fehlberg 4(5) variable step time", dyn), m_tol(tol) {
+    rk45<T>::rk45(const dynamics::base_dynamics<T>* dyn, const double atol, const double rtol) : base_integrator<T>("Runge Kutta Fehlberg 4(5) variable step time", dyn), m_atol(atol), m_rtol(rtol) {
 
     }
 
@@ -115,10 +115,10 @@ namespace smartuq::integrator {
                 TE = sqrt(TE);
 
                 // Calculate new step size
-                hnew = 0.9*h*pow(m_tol/TE, 0.2);
+                hnew = 0.9*h*pow(m_atol/TE, 0.2);
 
                 // Check convergence
-                if(TE > m_tol){
+                if(TE > m_atol){
                     h = hnew;
                 } else {
                     isStepComplete = true;

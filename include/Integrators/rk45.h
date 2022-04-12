@@ -45,7 +45,8 @@ namespace smartuq::integrator {
             using base_integrator<T>::m_name;
             using base_integrator<T>::m_dyn;
 
-            const double m_tol;
+            const double m_atol;
+            const double m_rtol;
 
         public:
 
@@ -56,9 +57,10 @@ namespace smartuq::integrator {
              * @date 2022-02-22
              * 
              * @param[in] dyn Dynamics model
-             * @param[in] tol Solver tolerance
+             * @param[in] atol Solver absolute tolerance
+             * @param[in] rtol Solver relative tolerance
              */
-            rk45(const dynamics::base_dynamics<T>* dyn, const double tol);
+            rk45(const dynamics::base_dynamics<T>* dyn, const double atol, const double rtol);
 
             /**
              * @brief rk45 desctructor.
