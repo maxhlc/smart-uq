@@ -102,57 +102,12 @@ namespace smartuq::polynomial {
     /************************************************/
     template <class T>
     chebyshev_polynomial<T> asin(const chebyshev_polynomial<T> &other){
-
-        return chebyshev_polynomial<T>::approximation(std::asin,other);
-
-        //SPAGHETTI PATCH FOR RANGE CONSTRAINING
-        int nvar =  other.get_nvar();
-        int degree = other.get_degree();
-        chebyshev_polynomial<T> res(nvar,degree, other.is_monomial_base());
         std::vector<T> range = other.get_range();
         range[0]=std::max(range[0],(T) -1.0);
         range[1]=std::min(range[1],(T) 1.0);
-        std::vector<T> approx(degree+1);
 
+        return chebyshev_polynomial<T>::approximation(std::asin,other);
 
-    if (other.is_monomial_base()){
-
-        //approximate sin in [a,b] with increased degree (two-step truncation to enhance precision)
-        int deg_max = chebyshev_polynomial<T>::MAX_DEGREE;
-        int deg = std::min((int) (degree*1.5+1), deg_max);
-        std::vector<T> cheb_approx = chebyshev_polynomial<T>::approximation(std::asin,range[0],range[1],deg);
-
-        // Translation to canonical basis, taking into acount deg+1 terms from cheb_approx but building a monom_approx of degree+1 terms.
-        // Hence rewriting code instead of calling to_monomial(), to avoid the computation of worthless terms of order > degree.
-
-        chebyshev_polynomial<T> monom_approx(1,degree,(T) cheb_approx[0], true);
-        chebyshev_polynomial<T> x(1,degree,(int) 0,-1.0,1.0, true);
-        chebyshev_polynomial<T> cheb_base1(1,degree,(int) 0,-1.0,1.0, true);
-        chebyshev_polynomial<T> cheb_base2(1,degree, (T) 1.0, true);
-        chebyshev_polynomial<T> cheb_base(1,degree, true);
-
-        monom_approx+= cheb_approx[1]*x;
-        for (int i=2;i<=deg;i++){
-            cheb_base=2.0*x*cheb_base1-cheb_base2;
-            cheb_base2=cheb_base1;
-            cheb_base1=cheb_base;
-            monom_approx+=cheb_approx[i]*cheb_base;
-        }
-
-        approx = monom_approx.get_coeffs();
-    }
-    else{
-        //approximate in [a,b]
-        approx = chebyshev_polynomial<T>::approximation(std::asin,range[0],range[1],degree);
-    }
-
-        //univariate composition
-        std::vector<chebyshev_polynomial<T> > base = chebyshev_polynomial<T>::evaluate_base1D(other,range[0],range[1]);
-        for (int i=0; i<=degree; i++){
-            res += base[i]*approx[i];
-        }
-
-        return res;
     }
     template class chebyshev_polynomial<double>
     asin(const chebyshev_polynomial<double> &);
@@ -166,57 +121,12 @@ namespace smartuq::polynomial {
     /************************************************/
     template <class T>
     chebyshev_polynomial<T> acos(const chebyshev_polynomial<T> &other){
-
-        return chebyshev_polynomial<T>::approximation(std::acos,other);
-
-        //SPAGHETTI PATCH FOR RANGE CONSTRAINING
-        int nvar =  other.get_nvar();
-        int degree = other.get_degree();
-        chebyshev_polynomial<T> res(nvar,degree, other.is_monomial_base());
         std::vector<T> range = other.get_range();
         range[0]=std::max(range[0],(T) -1.0);
         range[1]=std::min(range[1],(T) 1.0);
-        std::vector<T> approx(degree+1);
 
+        return chebyshev_polynomial<T>::approximation(std::acos,other);
 
-    if (other.is_monomial_base()){
-
-        //approximate sin in [a,b] with increased degree (two-step truncation to enhance precision)
-        int deg_max = chebyshev_polynomial<T>::MAX_DEGREE;
-        int deg = std::min((int) (degree*1.5+1), deg_max);
-        std::vector<T> cheb_approx = chebyshev_polynomial<T>::approximation(std::acos,range[0],range[1],deg);
-
-        // Translation to canonical basis, taking into acount deg+1 terms from cheb_approx but building a monom_approx of degree+1 terms.
-        // Hence rewriting code instead of calling to_monomial(), to avoid the computation of worthless terms of order > degree.
-
-        chebyshev_polynomial<T> monom_approx(1,degree,(T) cheb_approx[0], true);
-        chebyshev_polynomial<T> x(1,degree,(int) 0,-1.0,1.0, true);
-        chebyshev_polynomial<T> cheb_base1(1,degree,(int) 0,-1.0,1.0, true);
-        chebyshev_polynomial<T> cheb_base2(1,degree, (T) 1.0, true);
-        chebyshev_polynomial<T> cheb_base(1,degree, true);
-
-        monom_approx+= cheb_approx[1]*x;
-        for (int i=2;i<=deg;i++){
-            cheb_base=2.0*x*cheb_base1-cheb_base2;
-            cheb_base2=cheb_base1;
-            cheb_base1=cheb_base;
-            monom_approx+=cheb_approx[i]*cheb_base;
-        }
-
-        approx = monom_approx.get_coeffs();
-    }
-    else{
-        //approximate in [a,b]
-        approx = chebyshev_polynomial<T>::approximation(std::acos,range[0],range[1],degree);
-    }
-
-        //univariate composition
-        std::vector<chebyshev_polynomial<T> > base = chebyshev_polynomial<T>::evaluate_base1D(other,range[0],range[1]);
-        for (int i=0; i<=degree; i++){
-            res += base[i]*approx[i];
-        }
-
-        return res;
     }
     template class chebyshev_polynomial<double>
     acos(const chebyshev_polynomial<double> &);
@@ -283,55 +193,10 @@ namespace smartuq::polynomial {
     template <class T>
     chebyshev_polynomial<T> sqrt(const chebyshev_polynomial<T> &other){
 
-        //return chebyshev_polynomial<T>::approximation(sqrt,other);
-        //SPAGHETTI PATCH FOR RANGE CONSTRAINING
-        int nvar =  other.get_nvar();
-        int degree = other.get_degree();
-        chebyshev_polynomial<T> res(nvar,degree, other.is_monomial_base());
         std::vector<T> range = other.get_range();
         range[0]=std::max(range[0],(T) (ZERO*ZERO));
-        std::vector<T> approx(degree+1);
 
-
-    if (other.is_monomial_base()){
-
-        //approximate sin in [a,b] with increased degree (two-step truncation to enhance precision)
-        int deg_max = chebyshev_polynomial<T>::MAX_DEGREE;
-        int deg = std::min((int) (degree*1.5+1), deg_max);
-        std::vector<T> cheb_approx = chebyshev_polynomial<T>::approximation(std::sqrt,range[0],range[1],deg);
-
-        // Translation to canonical basis, taking into acount deg+1 terms from cheb_approx but building a monom_approx of degree+1 terms.
-        // Hence rewriting code instead of calling to_monomial(), to avoid the computation of worthless terms of order > degree.
-
-        chebyshev_polynomial<T> monom_approx(1,degree,(T) cheb_approx[0], true);
-        chebyshev_polynomial<T> x(1,degree,(int) 0,-1.0,1.0, true);
-        chebyshev_polynomial<T> cheb_base1(1,degree,(int) 0,-1.0,1.0, true);
-        chebyshev_polynomial<T> cheb_base2(1,degree, (T) 1.0, true);
-        chebyshev_polynomial<T> cheb_base(1,degree, true);
-
-        monom_approx+= cheb_approx[1]*x;
-        for (int i=2;i<=deg;i++){
-            cheb_base=2.0*x*cheb_base1-cheb_base2;
-            cheb_base2=cheb_base1;
-            cheb_base1=cheb_base;
-            monom_approx+=cheb_approx[i]*cheb_base;
-        }
-
-        approx = monom_approx.get_coeffs();
-    }
-    else{
-        //approximate in [a,b]
-        approx = chebyshev_polynomial<T>::approximation(std::sqrt,range[0],range[1],degree);
-    }
-
-        //univariate composition
-        std::vector<chebyshev_polynomial<T> > base = chebyshev_polynomial<T>::evaluate_base1D(other,range[0],range[1]);
-        for (int i=0; i<=degree; i++){
-            res += base[i]*approx[i];
-        }
-
-        return res;
-
+        return chebyshev_polynomial<T>::approximation(std::sqrt, other, range);
 
     }
     template class chebyshev_polynomial<double>
@@ -347,56 +212,11 @@ namespace smartuq::polynomial {
     template <class T>
     chebyshev_polynomial<T> log(const chebyshev_polynomial<T> &other){
 
-        // return chebyshev_polynomial<T>::approximation(log,other);
-
-        //SPAGHETTI PATCH FOR RANGE CONSTRAINING
-
-        int nvar =  other.get_nvar();
-        int degree = other.get_degree();
-        chebyshev_polynomial<T> res(nvar,degree, other.is_monomial_base());
         std::vector<T> range = other.get_range();
-        range[0]=std::max(range[0],(T) (ZERO*ZERO)); //where to set the min. a?? ZERO? exp(-1/ZERO)??
-        std::vector<T> approx(degree+1);
+        range[0]=std::max(range[0],(T) (ZERO*ZERO));
 
+        return chebyshev_polynomial<T>::approximation(std::log, other, range);
 
-        if (other.is_monomial_base()){
-
-            //approximate sin in [a,b] with increased degree (two-step truncation to enhance precision)
-            int deg_max = chebyshev_polynomial<T>::MAX_DEGREE;
-            int deg = std::min((int) (degree*1.5+1), deg_max);
-            std::vector<T> cheb_approx = chebyshev_polynomial<T>::approximation(std::log,range[0],range[1],deg);
-
-            // Translation to canonical basis, taking into acount deg+1 terms from cheb_approx but building a monom_approx of degree+1 terms.
-            // Hence rewriting code instead of calling to_monomial(), to avoid the computation of worthless terms of order > degree.
-
-            chebyshev_polynomial<T> monom_approx(1,degree,(T) cheb_approx[0], true);
-            chebyshev_polynomial<T> x(1,degree,(int) 0,-1.0,1.0, true);
-            chebyshev_polynomial<T> cheb_base1(1,degree,(int) 0,-1.0,1.0, true);
-            chebyshev_polynomial<T> cheb_base2(1,degree, (T) 1.0, true);
-            chebyshev_polynomial<T> cheb_base(1,degree, true);
-
-            monom_approx+= cheb_approx[1]*x;
-            for (int i=2;i<=deg;i++){
-                cheb_base=2.0*x*cheb_base1-cheb_base2;
-                cheb_base2=cheb_base1;
-                cheb_base1=cheb_base;
-                monom_approx+=cheb_approx[i]*cheb_base;
-            }
-
-            approx = monom_approx.get_coeffs();
-        }
-        else{
-            //approximate in [a,b]
-            approx = chebyshev_polynomial<T>::approximation(std::log,range[0],range[1],degree);
-        }
-
-        //univariate composition
-        std::vector<chebyshev_polynomial<T> > base = chebyshev_polynomial<T>::evaluate_base1D(other,range[0],range[1]);
-        for (int i=0; i<=degree; i++){
-        res += base[i]*approx[i];
-        }
-
-        return res;
     }
     template class chebyshev_polynomial<double>
     log(const chebyshev_polynomial<double> &);
@@ -411,8 +231,11 @@ namespace smartuq::polynomial {
     template <class T>
     chebyshev_polynomial<T> log10(const chebyshev_polynomial<T> &other){
 
-        return chebyshev_polynomial<T>::approximation(std::log10,other);
-        //THIS GUY NEEDS RANGE CONSTRAINING TOO
+        std::vector<T> range = other.get_range();
+        range[0]=std::max(range[0],(T) (ZERO*ZERO));
+
+        return chebyshev_polynomial<T>::approximation(std::log10, other, range);
+
     }
     template class chebyshev_polynomial<double>
     log10(const chebyshev_polynomial<double> &);
@@ -434,115 +257,21 @@ namespace smartuq::polynomial {
         chebyshev_polynomial<T> res(nvar,degree,other.is_monomial_base());
 
         // trivial case
-        if (exponent == 0) res = 1.0;
-
+        if (exponent == 0) {
+            res = 1.0;
         // natural exponent
-        else if ( exponent == floor(fabs(exponent)) ){//fancier way of checking if integer without doing exact comparison of two doubles?
+        } else if ( exponent == floor(fabs(exponent)) ){//fancier way of checking if integer without doing exact comparison of two doubles?
             res = other;
             for(int i=1; i<exponent; i++)
                 res *= other;
-        }
-
-        //general case
-        else{  //SPAGHETTI PATCH, DO THIS PROPERLY! 
-        
+        } else {
             std::vector<T> range = other.get_range();
-            if (exponent != floor (exponent)) range[0]=std::max(range[0],(T) 0.0); // constrain range if exponent is not integer
-            // Note: this guy above is 0.0. That's good if exponent>1 but maybe should be pow(ZERO, 1/exponent) for exponent<1 to avioid approximating in a point of infinite derivative...? 
-            std::vector<T> approx(degree+1);
+            range[0]=std::max(range[0],(T) (ZERO*ZERO));
 
+            static auto f = [exponent](const T x)->T {return std::pow(x, exponent);};
+            T (*ff)(T x) = [](const T x)->T { return f(x); };
 
-            if (other.is_monomial_base()){
-
-        //approximate sin in [a,b] with increased degree (two-step truncation to enhance precision)
-            int deg_max = chebyshev_polynomial<T>::MAX_DEGREE;
-            int deg = std::min((int) (degree*1.5+1), deg_max);
-
-                int n = chebyshev_polynomial<T>::MAX_DEGREE;
-                std::vector<T> cheb_approx(deg+1), d(n+1);
-                T fac;
-                T pi = 3.141592653589793;
-                T t;
-                T total;
-                T y;
-
-                for (int k = 0; k <= n; k++)
-                {
-                    t = cos(pi*(k+0.5)/(n+1)); //zeros Ti
-                    y = ((1.0+t)*range[1] + (1.0-t)*range[0])/2.0; //mapped zeros
-                    d[k] = pow(y,exponent); //evaluate function
-                }
-
-                //Interpolation in chebyshev basis -> MAX_DEGREE chebyshev nodes but only a deg polynomial.
-                fac = 2.0/(n+1);
-                for (int j = 0; j <= deg; j++)
-                {
-                    total = 0.0;
-                    for (int k = 0; k <= n; k++)
-                    {
-                        total = total+d[k]*cos( (pi*j)*( (k+ 0.5)/(n+1) ) );
-                    }
-                    cheb_approx[j] = fac*total;
-                }
-
-                cheb_approx[0] = cheb_approx[0]/2.0;
-
-                // Translation to canonical basis, taking into acount deg+1 terms from cheb_approx but building a monom_approx of degree+1 terms.
-                // Hence rewriting code instead of calling to_monomial(), to avoid the computation of worthless terms of order > degree.
-
-                chebyshev_polynomial<T> monom_approx(1,degree,(T) cheb_approx[0], true);
-                chebyshev_polynomial<T> x(1,degree,(int) 0,-1.0,1.0, true);
-                chebyshev_polynomial<T> cheb_base1(1,degree,(int) 0,-1.0,1.0, true);
-                chebyshev_polynomial<T> cheb_base2(1,degree, (T) 1.0, true);
-                chebyshev_polynomial<T> cheb_base(1,degree, true);
-
-                monom_approx+= cheb_approx[1]*x;
-                for (int i=2;i<=deg;i++){
-                cheb_base=2.0*x*cheb_base1-cheb_base2;
-                cheb_base2=cheb_base1;
-                cheb_base1=cheb_base;
-                monom_approx+=cheb_approx[i]*cheb_base;
-                }
-
-            approx = monom_approx.get_coeffs();
-            }
-            else{
-                //approximate in [a,b]
-                    int n = chebyshev_polynomial<T>::MAX_DEGREE;
-                    std::vector<T> cheb_approx(degree+1), d(n+1);
-                    T fac;
-                    T pi = 3.141592653589793;
-                    T t;
-                    T total;
-                    T y;
-
-                    for (int k = 0; k <= n; k++)
-                    {
-                        t = cos(pi*(k+0.5)/(n+1)); //zeros Ti
-                        y = ((1.0+t)*range[1] + (1.0-t)*range[0])/2.0; //mapped zeros
-                        d[k] = pow(y,exponent); //evaluate function
-                    }
-
-                    //Interpolation in chebyshev basis -> MAX_DEGREE chebyshev nodes but only a deg polynomial.
-                    fac = 2.0/(n+1);
-                    for (int j = 0; j <= degree; j++)
-                    {
-                        total = 0.0;
-                        for (int k = 0; k <= n; k++)
-                        {
-                            total = total+d[k]*cos( (pi*j)*( (k+ 0.5)/(n+1) ) );
-                        }
-                        cheb_approx[j] = fac*total;
-                    }
-
-                    cheb_approx[0] = cheb_approx[0]/2.0;
-            }
-
-            //univariate composition
-            std::vector<chebyshev_polynomial<T> > base = chebyshev_polynomial<T>::evaluate_base1D(other,range[0],range[1]);
-            for (int i=0; i<=degree; i++){
-                res += base[i]*approx[i];
-            }
+            res = chebyshev_polynomial<T>::approximation(ff, other, range);
         }
 
         return res;

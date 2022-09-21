@@ -367,6 +367,17 @@ namespace smartuq::polynomial {
          */
         static chebyshev_polynomial<T> approximation(T (*f)(T x), const chebyshev_polynomial<T> &other);
 
+        /**
+         * @brief approximation meta-function used for overloaded of elementary function.
+         *
+         * Approximate the function f and evaluates it in a polynomial
+         * @param f function to be approximated
+         * @param other polynomial for evaluationt
+         * @param range range for constraining the approximation
+         * @return the polynomial resulting from the evaluation of f in a polynomial
+         */
+        static chebyshev_polynomial<T> approximation(T (*f)(T x), const chebyshev_polynomial<T> &other, const std::vector<T> &range);
+
     private:
         void initialize_t();
         std::vector<std::vector<int> > get_t() const {return m_t;}
