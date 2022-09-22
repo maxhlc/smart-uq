@@ -54,9 +54,9 @@ namespace smartuq::polynomial {
          * @param order polynomial maximum degree
          * @param a vector containing the lower bound for each variable (default -1)
          * @param b vector containing the upper bound for each variable (default 1)
-         * @param monomial flag to detect the change of base (default false)
+         * @param monomial flag to detect the change of base (default true)
          */
-        chebyshev_polynomial(const int &vars, const int &order, const std::vector<T> &a=std::vector<T>(), const std::vector<T> &b=std::vector<T>(), const bool &monomial=false);
+        chebyshev_polynomial(const int &vars, const int &order, const std::vector<T> &a=std::vector<T>(), const std::vector<T> &b=std::vector<T>(), const bool &monomial=true);
         /**
          * @brief chebyshev_polynomial constructor
          *
@@ -68,9 +68,9 @@ namespace smartuq::polynomial {
          * @param i index of first degree variable (starting from 0)
          * @param a variable lower bound (default value -1)
          * @param b variable upper bound (default vale 1)
-         * @param monomial flag to detect the change of base (default false)
+         * @param monomial flag to detect the change of base (default true)
          */
-        chebyshev_polynomial(const int &vars, const int &order, const int &i, const T &a=-1.0, const T &b=1.0, const bool &monomial=false);
+        chebyshev_polynomial(const int &vars, const int &order, const int &i, const T &a=-1.0, const T &b=1.0, const bool &monomial=true);
         /**
          * @brief chebyshev_polynomial
          *
@@ -79,9 +79,9 @@ namespace smartuq::polynomial {
          * @param vars number of variables
          * @param order polynomialmaximum degree
          * @param value polynomial constant term
-         * @param monomial flag to detect the change of base (default false)
+         * @param monomial flag to detect the change of base (default true)
          */
-        chebyshev_polynomial(const int &vars, const int &order, const T &value, const bool &monomial=false);
+        chebyshev_polynomial(const int &vars, const int &order, const T &value, const bool &monomial=true);
         /**
          * @brief chebyshev_polynomial
          *
