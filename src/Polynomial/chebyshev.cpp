@@ -8,6 +8,7 @@
 --------- Author: Annalisa Riccardi and Carlos Ortega Absil ----------
 */
 
+#include <functional>
 
 #include "../../include/Polynomial/chebyshev.h"
 
@@ -864,6 +865,95 @@ namespace smartuq::polynomial {
 
     template < class T >
     chebyshev_polynomial<T> chebyshev_polynomial<T>::approximation(T (*f)(T x), const chebyshev_polynomial<T> &other, const std::vector<T> &range){
+        int nvar =  other.get_nvar();
+        int degree = other.get_degree();
+        chebyshev_polynomial<T> res(nvar,degree, other.is_monomial_base());
+        std::vector<T> approx(degree+1);
+
+
+        if (other.is_monomial_base()) {
+
+            //approximate sin in [a,b] with increased degree (two-step truncation to enhance precision)
+            int deg_max = chebyshev_polynomial<T>::MAX_DEGREE;
+            int deg = std::min((int) (degree*1.5+1), deg_max);
+            std::vector<T> cheb_approx = chebyshev_polynomial<T>::approximation(f,range[0],range[1],deg);
+
+            // Translation to canonical basis, taking into acount deg+1 terms from cheb_approx but building a monom_approx of degree+1 terms.
+            // Hence rewriting code instead of calling to_monomial(), to avoid the computation of worthless terms of order > degree.
+
+            chebyshev_polynomial<T> monom_approx(1,degree,(T) cheb_approx[0], true);
+            chebyshev_polynomial<T> x(1,degree,(int) 0,-1.0,1.0, true);
+            chebyshev_polynomial<T> cheb_base1(1,degree,(int) 0,-1.0,1.0, true);
+            chebyshev_polynomial<T> cheb_base2(1,degree, (T) 1.0, true);
+            chebyshev_polynomial<T> cheb_base(1,degree, true);
+
+            monom_approx+= cheb_approx[1]*x;
+            for (int i=2;i<=deg;i++){
+                cheb_base=2.0*x*cheb_base1-cheb_base2;
+                cheb_base2=cheb_base1;
+                cheb_base1=cheb_base;
+                monom_approx+=cheb_approx[i]*cheb_base;
+            }
+
+            approx = monom_approx.get_coeffs();
+        } else {
+            //approximate in [a,b]
+            approx = chebyshev_polynomial<T>::approximation(f,range[0],range[1],degree);
+    }
+
+        //univariate composition
+        std::vector<chebyshev_polynomial<T> > base = evaluate_base1D(other,range[0],range[1]);
+        for (int i=0; i<=degree; i++){
+            res += base[i]*approx[i];
+        }
+
+        return res;
+    }
+
+    template < class T >
+    std::vector<T> chebyshev_polynomial<T>::approximation(const std::function<T (const T)> f, const T &a, const T &b, const T &deg){
+        // returns a vector of size deg+1 with the coefficients of the chebyshev approximation of an univariate function
+        int n = chebyshev_polynomial<T>::MAX_DEGREE;
+        std::vector<T> res(deg+1), d(n+1);
+        T fac;
+        T pi = 3.141592653589793;
+        T t;
+        T total;
+        T y;
+
+        for (int k = 0; k <= n; k++)
+        {
+            t = cos(pi*(k+0.5)/(n+1)); //zeros Ti
+            y = ((1.0+t)*b + (1.0-t)*a)/2.0; //mapped zeros
+            d[k] = f(y); //evaluate function
+        }
+
+        //Interpolation in chebyshev basis -> MAX_DEGREE chebyshev nodes but only a deg polynomial.
+        fac = 2.0/(n+1);
+        for (int j = 0; j <= deg; j++)
+        {
+            total = 0.0;
+            for (int k = 0; k <= n; k++)
+            {
+                total = total+d[k]*cos( (pi*j)*( (k+ 0.5)/(n+1) ) );
+            }
+            res[j] = fac*total;
+        }
+
+        res[0] = res[0]/2.0;
+
+        return res;
+
+    }
+
+    template < class T >
+    chebyshev_polynomial<T> chebyshev_polynomial<T>::approximation(const std::function<T (const T)> f, const chebyshev_polynomial<T> &other){
+        std::vector<T> range = other.get_range();
+        return approximation(f, other, range);
+    }
+
+    template < class T >
+    chebyshev_polynomial<T> chebyshev_polynomial<T>::approximation(const std::function<T (const T)> f, const chebyshev_polynomial<T> &other, const std::vector<T> &range){
         int nvar =  other.get_nvar();
         int degree = other.get_degree();
         chebyshev_polynomial<T> res(nvar,degree, other.is_monomial_base());

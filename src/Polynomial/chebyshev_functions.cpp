@@ -268,10 +268,9 @@ namespace smartuq::polynomial {
             std::vector<T> range = other.get_range();
             range[0]=std::max(range[0],(T) (ZERO*ZERO));
 
-            static auto f = [exponent](const T x)->T {return std::pow(x, exponent);};
-            T (*ff)(T x) = [](const T x)->T { return f(x); };
+            std::function<T (const T)> f = [exponent](const T x) { return std::pow(x, exponent); };
 
-            res = chebyshev_polynomial<T>::approximation(ff, other, range);
+            res = chebyshev_polynomial<T>::approximation(f, other, range);
         }
 
         return res;

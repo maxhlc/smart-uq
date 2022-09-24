@@ -378,6 +378,39 @@ namespace smartuq::polynomial {
          */
         static chebyshev_polynomial<T> approximation(T (*f)(T x), const chebyshev_polynomial<T> &other, const std::vector<T> &range);
 
+        /**
+         * @brief approximation chebyshev approximation of a given function
+         *
+         * Approximate the univariate function f on the interval [a,b] up to specified degree
+         * @param f function to be approximated
+         * @param a lower interval bound
+         * @param b upper interval bound
+         * @param deg maximum degree of approximation
+         * @return the vector of coefficients of the chebbyshev polynomial approximation of f
+         */
+        static std::vector<T> approximation(const std::function<T (const T)> f, const T &a, const T &b, const T &deg = chebyshev_polynomial<T>::MAX_DEGREE);
+
+        /**
+         * @brief approximation meta-function used for overloaded of elementary function.
+         *
+         * Approximate the function f and evaluates it in a polynomial
+         * @param f function to be approximated
+         * @param other polynomial for evaluation
+         * @return the polynomial resulting from the evaluation of f in a polynomial
+         */
+        static chebyshev_polynomial<T> approximation(const std::function<T (const T)> f, const chebyshev_polynomial<T> &other);
+
+        /**
+         * @brief approximation meta-function used for overloaded of elementary function.
+         *
+         * Approximate the function f and evaluates it in a polynomial
+         * @param f function to be approximated
+         * @param other polynomial for evaluationt
+         * @param range range for constraining the approximation
+         * @return the polynomial resulting from the evaluation of f in a polynomial
+         */
+        static chebyshev_polynomial<T> approximation(const std::function<T (const T)> f, const chebyshev_polynomial<T> &other, const std::vector<T> &range);
+
     private:
         void initialize_t();
         std::vector<std::vector<int> > get_t() const {return m_t;}
